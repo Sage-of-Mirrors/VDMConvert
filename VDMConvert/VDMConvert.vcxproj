@@ -191,10 +191,14 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="source\vdvertexattribute.cpp" />
     <ClCompile Include="VDMConvert.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\GX_Enums.h" />
+    <ClInclude Include="include\util\array.h" />
     <ClInclude Include="include\vdmodel.h" />
+    <ClInclude Include="include\vdvertexattribute.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
