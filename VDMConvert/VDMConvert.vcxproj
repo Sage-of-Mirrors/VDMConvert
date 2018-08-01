@@ -125,7 +125,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>
       </AdditionalIncludeDirectories>
@@ -173,7 +173,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>
       </AdditionalIncludeDirectories>
@@ -191,16 +191,21 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="source\vdvertexattribute.cpp" />
-    <ClCompile Include="source\vdvertexdata.cpp" />
+    <ClCompile Include="source\model\vdmodel.cpp" />
+    <ClCompile Include="source\model\vertex_data\vdvertexattribute.cpp" />
+    <ClCompile Include="source\model\vertex_data\vdvertexdata.cpp" />
+    <ClCompile Include="source\util\bstream.cpp" />
     <ClCompile Include="VDMConvert.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\GX_Enums.h" />
+    <ClInclude Include="include\model\GX_Enums.h" />
+    <ClInclude Include="include\model\vdmodel.h" />
+    <ClInclude Include="include\model\vertex_data\vdvertexattributebase.h" />
+    <ClInclude Include="include\model\vertex_data\vdvertexattributes.h" />
+    <ClInclude Include="include\model\vertex_data\vdvertexattributet.h" />
+    <ClInclude Include="include\model\vertex_data\vdvertexdata.h" />
     <ClInclude Include="include\util\array.h" />
-    <ClInclude Include="include\vdmodel.h" />
-    <ClInclude Include="include\vdvertexattribute.h" />
-    <ClInclude Include="include\vdvertexdata.h" />
+    <ClInclude Include="include\util\bstream.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

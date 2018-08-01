@@ -1,5 +1,8 @@
 #pragma once
-#include "vdvertexattribute.h"
+#include "util/bstream.h"
+#include "vdvertexattributeBase.h"
+#include "vdvertexattributes.h"
+#include <vector>
 
 class VDVertexData {
 private:
@@ -10,5 +13,5 @@ public:
 	~VDVertexData();
 
 	VDVertexAttributeBase* GetAttribute(AttributeID attribId);
-	void Write();
+	void Write(bStream::CFileStream* writer);
 };

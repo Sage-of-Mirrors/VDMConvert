@@ -9,7 +9,7 @@ enum PrimitiveType {
 	POINTS = 0XB8
 };
 
-enum struct AttributeID {
+enum AttributeID {
 	POSITION_MATRIX_ID_X,
 	TEX_0_MATRIX_INDEX,
 	TEX_1_MATRIX_INDEX,

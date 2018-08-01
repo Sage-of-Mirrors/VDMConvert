@@ -18,27 +18,42 @@
     <ClCompile Include="VDMConvert.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\vdvertexattribute.cpp">
+    <ClCompile Include="source\util\bstream.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\vdvertexdata.cpp">
+    <ClCompile Include="source\model\vdmodel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\model\vertex_data\vdvertexattribute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\model\vertex_data\vdvertexdata.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\vdmodel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\vdvertexattribute.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\GX_Enums.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\util\array.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\vdvertexdata.h">
+    <ClInclude Include="include\util\bstream.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\model\vertex_data\vdvertexdata.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\model\GX_Enums.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\model\vdmodel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\model\vertex_data\vdvertexattributebase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\model\vertex_data\vdvertexattributet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\model\vertex_data\vdvertexattributes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
