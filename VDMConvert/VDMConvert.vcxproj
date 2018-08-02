@@ -206,6 +206,7 @@
     <ClInclude Include="include\model\vertex_data\vdvertexdata.h" />
     <ClInclude Include="include\util\array.h" />
     <ClInclude Include="include\util\bstream.h" />
+    <ClInclude Include="include\util\streamutil.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

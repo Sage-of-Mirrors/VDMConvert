@@ -56,5 +56,8 @@
     <ClInclude Include="include\model\vertex_data\vdvertexattributes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\util\streamutil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

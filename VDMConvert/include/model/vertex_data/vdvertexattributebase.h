@@ -13,11 +13,13 @@ protected:
 	uint8_t attributeType;
 	uint8_t componentCount;
 	uint8_t exponent;
+	uint32_t vertexCount;
 public:
 	AttributeID GetAttributeId();
 	bool GetIsColor();
 	uint8_t GetAttributeType();
 	uint8_t GetComponentCount();
+	uint32_t GetVertexCount();
 
 	void SetAttributeId(AttributeID attribId);
 	void SetIsColor(bool isColor);

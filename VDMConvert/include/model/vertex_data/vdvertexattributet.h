@@ -25,6 +25,8 @@ public:
 			if (!this->data.contains(data[i]))
 				this->data.append(data[i]);
 		}
+
+		vertexCount = this->data.size();
 	}
 
 	void WriteData(bStream::CFileStream* writer) {

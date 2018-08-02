@@ -20,6 +20,11 @@ uint8_t VDVertexAttributeBase::GetComponentCount()
 	return componentCount;
 }
 
+uint32_t VDVertexAttributeBase::GetVertexCount()
+{
+	return vertexCount;
+}
+
 void VDVertexAttributeBase::SetAttributeId(AttributeID attribId)
 {
 	attributeId = attribId;

@@ -1,5 +1,6 @@
 #pragma once
-#include "util/bstream.h"
+#include "../../util/bstream.h"
+#include "../../util/streamutil.h"
 #include "vdvertexattributeBase.h"
 #include "vdvertexattributes.h"
 #include <vector>

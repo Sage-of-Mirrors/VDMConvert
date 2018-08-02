@@ -104,6 +104,12 @@ void VDVertexData::Write(bStream::CFileStream* writer) {
 	{
 		VDVertexAttributeBase* attr = Attributes[i];
 
+		writer->seek(curOffset + 16 + (16 * i) + 8);
+		writer->writeUInt32(attr->GetVertexCount());
+		writer->writeUInt32(writer->getSize() - curOffset);
+
+		writer->seek(writer->getSize());
+
 		if (attr->GetAttributeId() == AttributeID::POSITION || attr->GetAttributeId() == AttributeID::NORMAL)
 		{
 			auto vec3dAttr = static_cast<VDVertexAttributeVector3*>(attr);
@@ -119,6 +125,8 @@ void VDVertexData::Write(bStream::CFileStream* writer) {
 			auto vec2dAttr = static_cast<VDVertexAttributeVector2*>(attr);
 			vec2dAttr->WriteData(writer);
 		}
+
+		StreamUtil::PadFileStream(writer, 32);
 	}
 
 	writer->seek(curOffset + 4);
