@@ -22,7 +22,7 @@ void VMesh::SetAttributes(aiMesh * mesh)
 		attributes |= (1 << 11);
 	}
 
-	if (mesh->HasVertexColors(0))
+	if (mesh->HasVertexColors(1))
 	{
 		attributes |= (1 << 12);
 	}
