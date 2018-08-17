@@ -1,18 +1,18 @@
 #pragma once
-#include "vdvertexattributet.h"
+#include "vvertexattributet.h"
 
-class VDVertexAttributeVector2 : public VDVertexAttributeT<aiVector2D> {
+class VVertexAttributeVector2 : public VVertexAttributeT<aiVector2D> {
 protected:
 	virtual void WriteDataValue(bStream::CFileStream * writer, const aiVector2D & value) override {
 		writer->writeFloat(value.x);
 		writer->writeFloat(value.y);
 	}
 public:
-	VDVertexAttributeVector2(AttributeID id, uint8_t type) : VDVertexAttributeT(id, type)
+	VVertexAttributeVector2(AttributeID id, uint8_t type) : VVertexAttributeT(id, type)
 	{ }
 };
 
-class VDVertexAttributeVector3 : public VDVertexAttributeT<aiVector3D> {
+class VVertexAttributeVector3 : public VVertexAttributeT<aiVector3D> {
 protected:
 	virtual void WriteDataValue(bStream::CFileStream * writer, const aiVector3D & value) override {
 		writer->writeFloat(value.x);
@@ -20,11 +20,11 @@ protected:
 		writer->writeFloat(value.z);
 	}
 public:
-	VDVertexAttributeVector3(AttributeID id, uint8_t type) : VDVertexAttributeT(id, type)
+	VVertexAttributeVector3(AttributeID id, uint8_t type) : VVertexAttributeT(id, type)
 	{ }
 };
 
-class VDVertexAttributeColor4 : public VDVertexAttributeT<aiColor4D> {
+class VVertexAttributeColor4 : public VVertexAttributeT<aiColor4D> {
 protected:
 	virtual void WriteDataValue(bStream::CFileStream * writer, const aiColor4D & value) override {
 		writer->writeFloat(value.r);
@@ -33,6 +33,6 @@ protected:
 		writer->writeFloat(value.a);
 	}
 public:
-	VDVertexAttributeColor4(AttributeID id, uint8_t type) : VDVertexAttributeT(id, type)
+	VVertexAttributeColor4(AttributeID id, uint8_t type) : VVertexAttributeT(id, type)
 	{ }
 };

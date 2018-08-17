@@ -1,14 +1,14 @@
 #pragma once
-#include "vdvertexattributebase.h"
+#include "vvertexattributebase.h"
 
 template <typename T>
-class VDVertexAttributeT : public VDVertexAttributeBase {
+class VVertexAttributeT : public VVertexAttributeBase {
 private:
 	CArrayT<T> data;
 protected:
 	virtual void WriteDataValue(bStream::CFileStream * writer, const T & value) = 0;
 public:
-	VDVertexAttributeT(AttributeID attribId, uint8_t attribType) {
+	VVertexAttributeT(AttributeID attribId, uint8_t attribType) {
 		attributeType = attribType;
 		attributeId = attribId;
 		componentCount = 0;

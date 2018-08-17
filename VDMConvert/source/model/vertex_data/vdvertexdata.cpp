@@ -1,21 +1,21 @@
-#include "../include/model/vertex_data/vdvertexdata.h"
+#include "../include/model/vertex_data/vvertexdata.h"
 
-VDVertexData::VDVertexData(aiMesh** meshes, int count) {
-	Attributes.append(new VDVertexAttributeVector3(AttributeID::POSITION, 4));
+VVertexData::VVertexData(aiMesh** meshes, int count) {
+	Attributes.append(new VVertexAttributeVector3(AttributeID::POSITION, 4));
 
 	for (int i = 0; i < count; i++)
 	{
 		const aiMesh* mesh = meshes[i];
-		auto positions = static_cast<VDVertexAttributeT<aiVector3D>*>(Attributes[0]);
+		auto positions = static_cast<VVertexAttributeT<aiVector3D>*>(Attributes[0]);
 		positions->AddData(mesh->mVertices, mesh->mNumVertices);
 		
 		if (mesh->HasNormals())
 		{
-			auto normals = static_cast<VDVertexAttributeVector3*>(GetAttribute(AttributeID::NORMAL));
+			auto normals = static_cast<VVertexAttributeVector3*>(GetAttribute(AttributeID::NORMAL));
 
 			if (normals == nullptr)
 			{
-				normals = new VDVertexAttributeVector3(AttributeID::NORMAL, 4);
+				normals = new VVertexAttributeVector3(AttributeID::NORMAL, 4);
 				Attributes.append(normals);
 			}
 
@@ -24,11 +24,11 @@ VDVertexData::VDVertexData(aiMesh** meshes, int count) {
 
 		if (mesh->HasVertexColors(0))
 		{
-			auto vtxColors0 = static_cast<VDVertexAttributeColor4*>(GetAttribute(AttributeID::COLOR_0));
+			auto vtxColors0 = static_cast<VVertexAttributeColor4*>(GetAttribute(AttributeID::COLOR_0));
 
 			if (vtxColors0 == nullptr)
 			{
-				vtxColors0 = new VDVertexAttributeColor4(AttributeID::COLOR_0, 5);
+				vtxColors0 = new VVertexAttributeColor4(AttributeID::COLOR_0, 5);
 				Attributes.append(vtxColors0);
 			}
 
@@ -37,11 +37,11 @@ VDVertexData::VDVertexData(aiMesh** meshes, int count) {
 
 		if (mesh->HasVertexColors(1))
 		{
-			auto vtxColors1 = static_cast<VDVertexAttributeColor4*>(GetAttribute(AttributeID::COLOR_1));
+			auto vtxColors1 = static_cast<VVertexAttributeColor4*>(GetAttribute(AttributeID::COLOR_1));
 
 			if (vtxColors1 == nullptr)
 			{
-				vtxColors1 = new VDVertexAttributeColor4(AttributeID::COLOR_1, 5);
+				vtxColors1 = new VVertexAttributeColor4(AttributeID::COLOR_1, 5);
 				Attributes.append(vtxColors1);
 			}
 
@@ -52,11 +52,11 @@ VDVertexData::VDVertexData(aiMesh** meshes, int count) {
 		{
 			if (mesh->HasTextureCoords(j))
 			{
-				auto texCoords = static_cast<VDVertexAttributeVector2*>(GetAttribute((AttributeID)((int)AttributeID::TEX_0 + j)));
+				auto texCoords = static_cast<VVertexAttributeVector2*>(GetAttribute((AttributeID)((int)AttributeID::TEX_0 + j)));
 
 				if (texCoords == nullptr)
 				{
-					texCoords = new VDVertexAttributeVector2((AttributeID)((int)AttributeID::TEX_0 + j), 4);
+					texCoords = new VVertexAttributeVector2((AttributeID)((int)AttributeID::TEX_0 + j), 4);
 					Attributes.append(texCoords);
 				}
 
@@ -73,11 +73,11 @@ VDVertexData::VDVertexData(aiMesh** meshes, int count) {
 	}
 }
 
-VDVertexData::~VDVertexData() {
+VVertexData::~VVertexData() {
 
 }
 
-VDVertexAttributeBase* VDVertexData::GetAttribute(AttributeID attribId) {
+VVertexAttributeBase* VVertexData::GetAttribute(AttributeID attribId) {
 	for (int i = 0; i < Attributes.size(); i++)
 	{
 		if (Attributes[i]->GetAttributeId() == attribId)
@@ -87,7 +87,7 @@ VDVertexAttributeBase* VDVertexData::GetAttribute(AttributeID attribId) {
 	return nullptr;
 }
 
-void VDVertexData::Write(bStream::CFileStream* writer) {
+void VVertexData::Write(bStream::CFileStream* writer) {
 	long curOffset = writer->tell();
 
 	writer->writeUInt32(id);
@@ -102,7 +102,7 @@ void VDVertexData::Write(bStream::CFileStream* writer) {
 
 	for (int i = 0; i < Attributes.size(); i++)
 	{
-		VDVertexAttributeBase* attr = Attributes[i];
+		VVertexAttributeBase* attr = Attributes[i];
 
 		writer->seek(curOffset + 16 + (16 * i) + 8);
 		writer->writeUInt32(attr->GetVertexCount());
@@ -112,17 +112,17 @@ void VDVertexData::Write(bStream::CFileStream* writer) {
 
 		if (attr->GetAttributeId() == AttributeID::POSITION || attr->GetAttributeId() == AttributeID::NORMAL)
 		{
-			auto vec3dAttr = static_cast<VDVertexAttributeVector3*>(attr);
+			auto vec3dAttr = static_cast<VVertexAttributeVector3*>(attr);
 			vec3dAttr->WriteData(writer);
 		}
 		else if (attr->GetAttributeId() == AttributeID::COLOR_0 || attr->GetAttributeId() == AttributeID::COLOR_1)
 		{
-			auto vecColor4Attr = static_cast<VDVertexAttributeColor4*>(attr);
+			auto vecColor4Attr = static_cast<VVertexAttributeColor4*>(attr);
 			vecColor4Attr->WriteData(writer);
 		}
 		else
 		{
-			auto vec2dAttr = static_cast<VDVertexAttributeVector2*>(attr);
+			auto vec2dAttr = static_cast<VVertexAttributeVector2*>(attr);
 			vec2dAttr->WriteData(writer);
 		}
 

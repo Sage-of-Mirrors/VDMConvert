@@ -1,20 +1,21 @@
-#include "..\include\model\vdmodel.h"
+#include "..\include\model\vmodel.h"
 
-VDModel::VDModel(const std::string file_path)
+VModel::VModel(const std::string file_path)
 {
 	const struct aiScene* scene = aiImportFile(file_path.data(), 0);
 
-	vertData = new VDVertexData(scene->mMeshes, scene->mNumMeshes);
+	vertData = new VVertexData(scene->mMeshes, scene->mNumMeshes);
+	geomData = new VGeometry(scene->mMeshes, scene->mNumMeshes);
 
 	aiReleaseImport(scene);
 }
 
-VDModel::~VDModel()
+VModel::~VModel()
 {
 	delete vertData;
 }
 
-void VDModel::WriteVDM(const std::string file_path)
+void VModel::WriteVDM(const std::string file_path)
 {
 	bStream::CFileStream* writer = new bStream::CFileStream(file_path, bStream::Big, bStream::Out);
 
@@ -24,6 +25,7 @@ void VDModel::WriteVDM(const std::string file_path)
 	writer->writeInt32(-1); // Padding, it will be -1 for now
 
 	vertData->Write(writer);
+	geomData->Write(writer);
 
 	writer->seek(4);
 	writer->writeInt32(writer->getSize()); // Write file size

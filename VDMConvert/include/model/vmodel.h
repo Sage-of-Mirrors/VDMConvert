@@ -6,15 +6,17 @@
 #include <assimp/postprocess.h>
 
 #include "util/bstream.h"
-#include "vertex_data/vdvertexdata.h"
+#include "vertex_data/vvertexdata.h"
+#include "geometry/vgeometry.h"
 
-class VDModel {
+class VModel {
 private:
-	const int id = 1447316804;
-	VDVertexData * vertData;
+	const int id = 1447904332;
+	VVertexData * vertData;
+	VGeometry * geomData;
 public:
-	VDModel(const std::string file_path);
-	~VDModel();
+	VModel(const std::string file_path);
+	~VModel();
 
 	void WriteVDM(const std::string file_path);
 };

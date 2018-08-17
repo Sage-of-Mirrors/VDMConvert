@@ -191,6 +191,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="source\geometry\vgeometry.cpp" />
+    <ClCompile Include="source\geometry\vmesh.cpp" />
     <ClCompile Include="source\model\vdmodel.cpp" />
     <ClCompile Include="source\model\vertex_data\vdvertexattribute.cpp" />
     <ClCompile Include="source\model\vertex_data\vdvertexdata.cpp" />
@@ -198,12 +200,14 @@
     <ClCompile Include="VDMConvert.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\model\geometry\vgeometry.h" />
+    <ClInclude Include="include\model\geometry\vmesh.h" />
     <ClInclude Include="include\model\GX_Enums.h" />
-    <ClInclude Include="include\model\vdmodel.h" />
-    <ClInclude Include="include\model\vertex_data\vdvertexattributebase.h" />
-    <ClInclude Include="include\model\vertex_data\vdvertexattributes.h" />
-    <ClInclude Include="include\model\vertex_data\vdvertexattributet.h" />
-    <ClInclude Include="include\model\vertex_data\vdvertexdata.h" />
+    <ClInclude Include="include\model\vmodel.h" />
+    <ClInclude Include="include\model\vertex_data\vvertexattributebase.h" />
+    <ClInclude Include="include\model\vertex_data\vvertexattributes.h" />
+    <ClInclude Include="include\model\vertex_data\vvertexattributet.h" />
+    <ClInclude Include="include\model\vertex_data\vvertexdata.h" />
     <ClInclude Include="include\util\array.h" />
     <ClInclude Include="include\util\bstream.h" />
     <ClInclude Include="include\util\streamutil.h" />

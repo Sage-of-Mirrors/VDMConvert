@@ -6,7 +6,7 @@
 #include "../GX_Enums.h"
 #include "util/bstream.h"
 
-class VDVertexAttributeBase {
+class VVertexAttributeBase {
 protected:
 	AttributeID attributeId;
 	bool isColor;

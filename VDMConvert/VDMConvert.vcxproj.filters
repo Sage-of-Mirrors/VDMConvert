@@ -30,6 +30,12 @@
     <ClCompile Include="source\model\vertex_data\vdvertexdata.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="source\geometry\vgeometry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\geometry\vmesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\util\array.h">
@@ -38,25 +44,31 @@
     <ClInclude Include="include\util\bstream.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\model\vertex_data\vdvertexdata.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\model\GX_Enums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\model\vdmodel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\model\vertex_data\vdvertexattributebase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\model\vertex_data\vdvertexattributet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\model\vertex_data\vdvertexattributes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\util\streamutil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\model\vertex_data\vvertexdata.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\model\vertex_data\vvertexattributet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\model\vertex_data\vvertexattributes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\model\vertex_data\vvertexattributebase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\model\vmodel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\model\geometry\vgeometry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\model\geometry\vmesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,58 +1,58 @@
-#include "../include/model/vertex_data/vdvertexattributebase.h"
+#include "../include/model/vertex_data/vvertexattributebase.h"
 
-AttributeID VDVertexAttributeBase::GetAttributeId()
+AttributeID VVertexAttributeBase::GetAttributeId()
 {
 	return attributeId;
 }
 
-bool VDVertexAttributeBase::GetIsColor()
+bool VVertexAttributeBase::GetIsColor()
 {
 	return isColor;
 }
 
-uint8_t VDVertexAttributeBase::GetAttributeType()
+uint8_t VVertexAttributeBase::GetAttributeType()
 {
 	return attributeType;
 }
 
-uint8_t VDVertexAttributeBase::GetComponentCount()
+uint8_t VVertexAttributeBase::GetComponentCount()
 {
 	return componentCount;
 }
 
-uint32_t VDVertexAttributeBase::GetVertexCount()
+uint32_t VVertexAttributeBase::GetVertexCount()
 {
 	return vertexCount;
 }
 
-void VDVertexAttributeBase::SetAttributeId(AttributeID attribId)
+void VVertexAttributeBase::SetAttributeId(AttributeID attribId)
 {
 	attributeId = attribId;
 }
 
-void VDVertexAttributeBase::SetIsColor(bool isColor)
+void VVertexAttributeBase::SetIsColor(bool isColor)
 {
 	this->isColor = isColor;
 }
 
-void VDVertexAttributeBase::SetAttributeType(DataType dataType)
+void VVertexAttributeBase::SetAttributeType(DataType dataType)
 {
 	attributeType = static_cast<uint8_t>(dataType);
 	isColor = false;
 }
 
-void VDVertexAttributeBase::SetAttributeType(ColorDataType colorDataType)
+void VVertexAttributeBase::SetAttributeType(ColorDataType colorDataType)
 {
 	attributeType = static_cast<uint8_t>(colorDataType);
 	isColor = true;
 }
 
-void VDVertexAttributeBase::SetComponentCount(uint8_t compCnt)
+void VVertexAttributeBase::SetComponentCount(uint8_t compCnt)
 {
 	componentCount = compCnt;
 }
 
-void VDVertexAttributeBase::Write(bStream::CFileStream* writer)
+void VVertexAttributeBase::Write(bStream::CFileStream* writer)
 {
 	writer->writeUInt32(static_cast<uint32_t>(attributeId));
 	writer->writeUInt8(attributeType);
