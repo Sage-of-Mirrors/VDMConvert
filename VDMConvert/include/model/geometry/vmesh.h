@@ -1,6 +1,7 @@
 #pragma once
 #include <assimp/mesh.h>
 #include "util/bstream.h"
+#include "model/GX_Enums.h"
 
 class VMesh {
 private:

@@ -1,5 +1,5 @@
 #pragma once
-#include "vvertexattributebase.h"
+#include "model/vertex_data/vvertexattributebase.h"
 
 template <typename T>
 class VVertexAttributeT : public VVertexAttributeBase {

@@ -1,4 +1,4 @@
-#include "../include/model/vertex_data/vvertexdata.h"
+#include "model/vertex_data/vvertexdata.h"
 
 VVertexData::VVertexData(aiMesh** meshes, int count) {
 	Attributes.append(new VVertexAttributeVector3(AttributeID::POSITION, 4));

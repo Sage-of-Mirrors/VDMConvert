@@ -1,4 +1,4 @@
-#include "../../include/model/geometry/vmesh.h"
+#include "model/geometry/vmesh.h"
 
 VMesh::VMesh(aiMesh* mesh)
 {
@@ -17,14 +17,12 @@ void VMesh::SetAttributes(aiMesh * mesh)
 		attributes |= (1 << 10);
 	}
 
-	if (mesh->HasVertexColors(0))
+	for (int i = 0; i < 2; i++)
 	{
-		attributes |= (1 << 11);
-	}
-
-	if (mesh->HasVertexColors(1))
-	{
-		attributes |= (1 << 12);
+		if (mesh->HasVertexColors(i))
+		{
+			attributes |= (1 << 11 + i);
+		}
 	}
 
 	for (int i = 0; i < 8; i++)

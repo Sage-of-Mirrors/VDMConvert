@@ -1,9 +1,8 @@
 #pragma once
-#include "../../util/bstream.h"
-#include "../../util/streamutil.h"
-#include "vvertexattributeBase.h"
-#include "vvertexattributes.h"
-#include <vector>
+#include "util/bstream.h"
+#include "util/streamutil.h"
+#include "model/vertex_data/vvertexattributeBase.h"
+#include "model/vertex_data/vvertexattributes.h"
 
 class VVertexData {
 private:

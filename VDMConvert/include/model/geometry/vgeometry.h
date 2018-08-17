@@ -1,8 +1,8 @@
 #pragma once
 #include <assimp/mesh.h>
-#include "../../util/bstream.h"
-#include "../../util/streamutil.h"
-#include "../../util/array.h"
+#include "util/bstream.h"
+#include "util/streamutil.h"
+#include "util/array.h"
 #include "vmesh.h"
 
 class VGeometry {

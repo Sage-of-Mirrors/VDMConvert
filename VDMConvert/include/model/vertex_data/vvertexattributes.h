@@ -1,5 +1,5 @@
 #pragma once
-#include "vvertexattributet.h"
+#include "model/vertex_data/VVertexAttributeT.h"
 
 class VVertexAttributeVector2 : public VVertexAttributeT<aiVector2D> {
 protected:

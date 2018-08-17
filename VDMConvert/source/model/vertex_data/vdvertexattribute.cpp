@@ -1,4 +1,4 @@
-#include "../include/model/vertex_data/vvertexattributebase.h"
+#include "model/vertex_data/vvertexattributebase.h"
 
 AttributeID VVertexAttributeBase::GetAttributeId()
 {

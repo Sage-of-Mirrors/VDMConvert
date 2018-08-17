@@ -1,4 +1,4 @@
-#include "..\include\model\vmodel.h"
+#include "model/vmodel.h"
 
 VModel::VModel(const std::string file_path)
 {

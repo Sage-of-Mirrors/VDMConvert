@@ -3,7 +3,7 @@
 #include <assimp/mesh.h>
 
 #include "util/array.h"
-#include "../GX_Enums.h"
+#include "model/GX_Enums.h"
 #include "util/bstream.h"
 
 class VVertexAttributeBase {

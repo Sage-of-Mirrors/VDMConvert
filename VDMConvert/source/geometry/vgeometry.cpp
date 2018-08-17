@@ -1,4 +1,4 @@
-#include "../include/model/geometry/vgeometry.h"
+#include "model/geometry/vgeometry.h"
 
 VGeometry::VGeometry(aiMesh** meshes, int count)
 {
