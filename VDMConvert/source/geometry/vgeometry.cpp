@@ -1,12 +1,17 @@
 #include "model/geometry/vgeometry.h"
 
-VGeometry::VGeometry(aiMesh** meshes, int count)
+VGeometry::VGeometry(aiMesh** meshes, int count, VVertexData * vtx_data)
 {
 	for (int i = 0; i < count; i++)
 	{
-		VMesh * mesh = new VMesh(meshes[i]);
+		VMesh * mesh = new VMesh(meshes[i], vtx_data);
 		mesh_data.append(mesh);
 	}
+}
+
+VGeometry::~VGeometry()
+{
+
 }
 
 void VGeometry::Write(bStream::CFileStream* writer)

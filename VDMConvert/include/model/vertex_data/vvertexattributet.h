@@ -15,7 +15,7 @@ public:
 		exponent = 0;
 	}
 
-	CArrayT<T>* GetData() {
+	CArrayT<T> GetData() {
 		return data;
 	}
 

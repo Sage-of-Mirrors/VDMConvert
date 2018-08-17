@@ -5,7 +5,7 @@ VModel::VModel(const std::string file_path)
 	const struct aiScene* scene = aiImportFile(file_path.data(), 0);
 
 	vertData = new VVertexData(scene->mMeshes, scene->mNumMeshes);
-	geomData = new VGeometry(scene->mMeshes, scene->mNumMeshes);
+	geomData = new VGeometry(scene->mMeshes, scene->mNumMeshes, vertData);
 
 	aiReleaseImport(scene);
 }
@@ -13,6 +13,7 @@ VModel::VModel(const std::string file_path)
 VModel::~VModel()
 {
 	delete vertData;
+	delete geomData;
 }
 
 void VModel::WriteVDM(const std::string file_path)
