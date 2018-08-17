@@ -10,18 +10,18 @@ VMesh::VMesh(aiMesh* mesh)
 void VMesh::SetAttributes(aiMesh * mesh)
 {
 	attributes = 0;
-	attributes |= (1 << 9);
+	attributes |= (1 << static_cast<int32_t>(AttributeID::POSITION));
 
 	if (mesh->HasNormals())
 	{
-		attributes |= (1 << 10);
+		attributes |= (1 << static_cast<int32_t>(AttributeID::NORMAL));
 	}
 
 	for (int i = 0; i < 2; i++)
 	{
 		if (mesh->HasVertexColors(i))
 		{
-			attributes |= (1 << 11 + i);
+			attributes |= (1 << static_cast<int32_t>(AttributeID::COLOR_0 + i));
 		}
 	}
 
@@ -29,7 +29,7 @@ void VMesh::SetAttributes(aiMesh * mesh)
 	{
 		if (mesh->HasTextureCoords(i))
 		{
-			attributes |= (1 << 13 + i);
+			attributes |= (1 << static_cast<int32_t>(AttributeID::TEX_0 + i));
 		}
 	}
 }
