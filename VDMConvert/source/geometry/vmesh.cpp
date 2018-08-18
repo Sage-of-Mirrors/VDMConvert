@@ -40,6 +40,30 @@ void VMesh::SetIndices(aiMesh * mesh, VVertexData * vtx_data)
 	CArrayT<aiVector3D> positions_for_bounds;
 
 	CArrayT<aiVector3D> vtx_positions = static_cast<VVertexAttributeVector3 *>(vtx_data->GetAttribute(AttributeID::POSITION))->GetData();
+	CArrayT<aiVector3D> vtx_normals;
+	CArrayT<aiColor4D>  vtx_colors[2];
+	CArrayT<aiVector2D> vtx_uvs[8];
+	
+	if (mesh->HasNormals())
+	{
+		vtx_normals = static_cast<VVertexAttributeVector3 *>(vtx_data->GetAttribute(AttributeID::NORMAL))->GetData();
+	}
+	
+	for (int i = 0; i < 2; i++)
+	{
+		if (mesh->HasVertexColors(i))
+		{
+			vtx_colors[i] = static_cast<VVertexAttributeColor4 *>(vtx_data->GetAttribute(AttributeID::COLOR_0 + i))->GetData();
+		}
+	}
+	
+	for (int i = 0; i < 8; i++)
+	{
+		if (mesh->HasTextureCoords(i))
+		{
+			vtx_uvs[i] = static_cast<VVertexAttributeVector2 *>(vtx_data->GetAttribute(AttributeID::TEX_0 + i))->GetData();
+		}
+	}
 
 	for (int i = 0; i < mesh->mNumFaces; i++)
 	{
@@ -54,6 +78,11 @@ void VMesh::SetIndices(aiMesh * mesh, VVertexData * vtx_data)
 				positions_for_bounds.append(pos);
 				break;
 			}
+		}
+		
+		if (mesh->HasNormals())
+		{
+			uint16_t nrm_index = mesh->mFaces[i].mIndices[1];
 		}
 	}
 

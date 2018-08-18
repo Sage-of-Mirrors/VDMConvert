@@ -1,41 +1,67 @@
 #pragma once
 
 #include <cstddef>
-#include <cassert>
+#include <initializer_list>
+#include <iterator>
 #include <vector>
+
+#include <crumbly/system/error.h>
+
+namespace crumbly {
+namespace gadget {
+
+// ------------------------------------------------------------------------- //
 
 template < typename T >
 class CArrayT {
 
 	public:
 
-	CArrayT(size_t capacity = 100);
+	using TItem = T;
+	using TArray = CArrayT<TItem>;
 
-	T & at(size_t index);
-	T & operator[] (size_t index);
-	T & front();
-	T & back();
+	CArrayT() = default;
+	CArrayT(size_t capacity);
+	CArrayT(const TItem & item, size_t count);
+	CArrayT(const TItem items[], size_t count);
+	CArrayT(const TArray & array);
+	CArrayT(const TArray & array, size_t start, size_t count);
+	CArrayT(const std::initializer_list<TItem> & items);
 
-	const T & at(size_t index) const;
-	const T & operator[] (size_t index) const;
-	const T & front() const;
-	const T & back() const;
+	TItem & at(size_t index);
+	TItem & operator[](size_t index);
+	TItem & front();
+	TItem & back();
+	TItem * data();
 
+	const TItem & at(size_t index) const;
+	const TItem & operator[](size_t index) const;
+	const TItem & front() const;
+	const TItem & back() const;
+	const TItem * data() const;
+
+	bool empty() const;
 	size_t size() const;
 	size_t capacity() const;
 
 	void clear();
 	void reserve(size_t needed);
-	void insert(T item, size_t index);
-	void prepend(T item);
-	void append(T item);
-	bool remove(T item);
-	void remove(size_t index);
-	bool contains(T item) const;
+	void resize(size_t count, const TItem & item = TItem());
+	void shrink();
+
+	void insert(const TItem & item, size_t index);
+	void prepend(const TItem & item);
+	void append(const TItem & item);
+	bool remove(const TItem & item);
+	void erase(size_t start, size_t count = 1);
+
+	bool contains(const TItem & item, size_t * index = nullptr) const;
+
+	TItem * copy() const;
 
 	private:
 
-	std::vector<T> mItems;
+	std::vector<TItem> mItems;
 
 };
 
@@ -49,14 +75,53 @@ CArrayT<T>::CArrayT(size_t capacity) {
 }
 
 template < typename T >
+CArrayT<T>::CArrayT(const TItem & item, size_t count) :
+	mItems(count, item)
+{ }
+
+template < typename T >
+CArrayT<T>::CArrayT(const TItem items[], size_t count) {
+	CRUMBLY_ASSERT(items != nullptr || count == 0);
+	reserve(count);
+
+	for (size_t i = 0; i < count; ++i) {
+		append(items[i]);
+	}
+}
+
+template < typename T >
+CArrayT<T>::CArrayT(const TArray & array) {
+	reserve(array.size());
+
+	for (size_t i = 0; i < array.size(); ++i) {
+		append(array[i]);
+	}
+}
+
+template < typename T >
+CArrayT<T>::CArrayT(const TArray & array, size_t start, size_t count) {
+	CRUMBLY_ASSERT((start + count) <= array.size());
+	reserve(count);
+
+	for (size_t i = 0; i < count; ++i) {
+		append(array[start + i]);
+	}
+}
+
+template < typename T >
+CArrayT<T>::CArrayT(const std::initializer_list<TItem> & items) :
+	mItems(items)
+{ }
+
+template < typename T >
 T & CArrayT<T>::at(size_t index) {
-	assert(index < mItems.size());
+	CRUMBLY_ASSERT(index < mItems.size());
 	return mItems[index];
 }
 
 template < typename T >
-T & CArrayT<T>::operator[] (size_t index) {
-	assert(index < mItems.size());
+T & CArrayT<T>::operator[](size_t index) {
+	CRUMBLY_ASSERT(index < mItems.size());
 	return mItems[index];
 }
 
@@ -71,14 +136,19 @@ T & CArrayT<T>::back() {
 }
 
 template < typename T >
+T * CArrayT<T>::data() {
+	return mItems.data();
+}
+
+template < typename T >
 const T & CArrayT<T>::at(size_t index) const {
-	assert(index < mItems.size());
+	CRUMBLY_ASSERT(index < mItems.size());
 	return mItems[index];
 }
 
 template < typename T >
-const T & CArrayT<T>::operator[] (size_t index) const {
-	assert(index < mItems.size());
+const T & CArrayT<T>::operator[](size_t index) const {
+	CRUMBLY_ASSERT(index < mItems.size());
 	return mItems[index];
 }
 
@@ -90,6 +160,16 @@ const T & CArrayT<T>::front() const {
 template < typename T >
 const T & CArrayT<T>::back() const {
 	return mItems.back();
+}
+
+template < typename T >
+const T * CArrayT<T>::data() const {
+	return mItems.data();
+}
+
+template < typename T >
+bool CArrayT<T>::empty() const {
+	return mItems.empty();
 }
 
 template < typename T >
@@ -113,23 +193,33 @@ void CArrayT<T>::reserve(size_t needed) {
 }
 
 template < typename T >
-void CArrayT<T>::insert(T item, size_t index) {
-	assert(index <= mItems.size());
+void CArrayT<T>::resize(size_t count, const TItem & item) {
+	mItems.resize(count, item);
+}
+
+template < typename T >
+void CArrayT<T>::shrink() {
+	mItems.shrink_to_fit();
+}
+
+template < typename T >
+void CArrayT<T>::insert(const TItem & item, size_t index) {
+	CRUMBLY_ASSERT(index <= mItems.size());
 	mItems.insert((mItems.begin() + index), item);
 }
 
 template < typename T >
-void CArrayT<T>::prepend(T item) {
+void CArrayT<T>::prepend(const TItem & item) {
 	insert(item, 0);
 }
 
 template < typename T >
-void CArrayT<T>::append(T item) {
+void CArrayT<T>::append(const TItem & item) {
 	mItems.push_back(item);
 }
 
 template < typename T >
-bool CArrayT<T>::remove(T item) {
+bool CArrayT<T>::remove(const TItem & item) {
 	for (auto i = mItems.begin(); i != mItems.end(); ++i) {
 		if (*i == item) {
 			mItems.erase(i);
@@ -141,18 +231,46 @@ bool CArrayT<T>::remove(T item) {
 }
 
 template < typename T >
-void CArrayT<T>::remove(size_t index) {
-	assert(index < mItems.size());
-	mItems.erase(mItems.begin() + index);
+void CArrayT<T>::erase(size_t start, size_t count) {
+	CRUMBLY_ASSERT((start + count) <= mItems.size());
+
+	if (count == 0) {
+		return;
+	}
+
+	auto first = (mItems.begin() + start);
+	auto last = (first + (count - 1));
+	mItems.erase(first, last);
 }
 
 template < typename T >
-bool CArrayT<T>::contains(T item) const {
+bool CArrayT<T>::contains(const TItem & item, size_t * index) const {
 	for (auto i = mItems.begin(); i != mItems.end(); ++i) {
 		if (*i == item) {
+			if (index != nullptr) {
+				*index = static_cast<size_t>(std::distance(mItems.begin(), i));
+			}
+
 			return true;
 		}
 	}
 
 	return false;
+}
+
+template < typename T >
+T * CArrayT<T>::copy() const {
+	TItem * items = new TItem[mItems.size()];
+	CRUMBLY_ASSERT(items != nullptr);
+
+	for (size_t i = 0; i < mItems.size(); ++i) {
+		items[i] = mItems[i];
+	}
+
+	return items;
+}
+
+// ------------------------------------------------------------------------- //
+
+}
 }
