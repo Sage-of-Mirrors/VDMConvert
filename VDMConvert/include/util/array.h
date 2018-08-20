@@ -5,13 +5,6 @@
 #include <iterator>
 #include <vector>
 
-#include <crumbly/system/error.h>
-
-namespace crumbly {
-namespace gadget {
-
-// ------------------------------------------------------------------------- //
-
 template < typename T >
 class CArrayT {
 
@@ -81,7 +74,6 @@ CArrayT<T>::CArrayT(const TItem & item, size_t count) :
 
 template < typename T >
 CArrayT<T>::CArrayT(const TItem items[], size_t count) {
-	CRUMBLY_ASSERT(items != nullptr || count == 0);
 	reserve(count);
 
 	for (size_t i = 0; i < count; ++i) {
@@ -100,7 +92,6 @@ CArrayT<T>::CArrayT(const TArray & array) {
 
 template < typename T >
 CArrayT<T>::CArrayT(const TArray & array, size_t start, size_t count) {
-	CRUMBLY_ASSERT((start + count) <= array.size());
 	reserve(count);
 
 	for (size_t i = 0; i < count; ++i) {
@@ -115,13 +106,11 @@ CArrayT<T>::CArrayT(const std::initializer_list<TItem> & items) :
 
 template < typename T >
 T & CArrayT<T>::at(size_t index) {
-	CRUMBLY_ASSERT(index < mItems.size());
 	return mItems[index];
 }
 
 template < typename T >
 T & CArrayT<T>::operator[](size_t index) {
-	CRUMBLY_ASSERT(index < mItems.size());
 	return mItems[index];
 }
 
@@ -142,13 +131,11 @@ T * CArrayT<T>::data() {
 
 template < typename T >
 const T & CArrayT<T>::at(size_t index) const {
-	CRUMBLY_ASSERT(index < mItems.size());
 	return mItems[index];
 }
 
 template < typename T >
 const T & CArrayT<T>::operator[](size_t index) const {
-	CRUMBLY_ASSERT(index < mItems.size());
 	return mItems[index];
 }
 
@@ -204,7 +191,6 @@ void CArrayT<T>::shrink() {
 
 template < typename T >
 void CArrayT<T>::insert(const TItem & item, size_t index) {
-	CRUMBLY_ASSERT(index <= mItems.size());
 	mItems.insert((mItems.begin() + index), item);
 }
 
@@ -232,8 +218,6 @@ bool CArrayT<T>::remove(const TItem & item) {
 
 template < typename T >
 void CArrayT<T>::erase(size_t start, size_t count) {
-	CRUMBLY_ASSERT((start + count) <= mItems.size());
-
 	if (count == 0) {
 		return;
 	}
@@ -261,16 +245,10 @@ bool CArrayT<T>::contains(const TItem & item, size_t * index) const {
 template < typename T >
 T * CArrayT<T>::copy() const {
 	TItem * items = new TItem[mItems.size()];
-	CRUMBLY_ASSERT(items != nullptr);
 
 	for (size_t i = 0; i < mItems.size(); ++i) {
 		items[i] = mItems[i];
 	}
 
 	return items;
-}
-
-// ------------------------------------------------------------------------- //
-
-}
 }

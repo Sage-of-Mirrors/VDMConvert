@@ -8,6 +8,7 @@ class VMesh {
 private:
 	std::string name;
 	uint32_t attributes;
+	uint16_t num_faces;
 	CArrayT<uint16_t> indices;
 	aiVector3D min_bounds;
 	aiVector3D max_bounds;

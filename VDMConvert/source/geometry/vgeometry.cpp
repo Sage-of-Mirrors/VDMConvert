@@ -28,6 +28,11 @@ void VGeometry::Write(bStream::CFileStream* writer)
 		mesh_data[i]->Write(writer);
 	}
 
+	for (int i = 0; i < mesh_data.size(); i++)
+	{
+		mesh_data[i]->WritePrimitives(writer);
+	}
+
 	// Write string table
 	writer->seek(chunk_start + 12);
 	writer->writeInt32(writer->getSize() - chunk_start);

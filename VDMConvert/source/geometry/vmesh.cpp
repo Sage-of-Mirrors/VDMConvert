@@ -3,6 +3,7 @@
 VMesh::VMesh(aiMesh* mesh, VVertexData * vtx_data)
 {
 	name = mesh->mName.data;
+	num_faces = mesh->mNumFaces;
 
 	SetAttributes(mesh);
 	SetIndices(mesh, vtx_data);
@@ -42,7 +43,7 @@ void VMesh::SetIndices(aiMesh * mesh, VVertexData * vtx_data)
 	CArrayT<aiVector3D> vtx_positions = static_cast<VVertexAttributeVector3 *>(vtx_data->GetAttribute(AttributeID::POSITION))->GetData();
 	CArrayT<aiVector3D> vtx_normals;
 	CArrayT<aiColor4D>  vtx_colors[2];
-	CArrayT<aiVector2D> vtx_uvs[8];
+	CArrayT<aiVector3D> vtx_uvs[8];
 	
 	if (mesh->HasNormals())
 	{
@@ -51,38 +52,82 @@ void VMesh::SetIndices(aiMesh * mesh, VVertexData * vtx_data)
 	
 	for (int i = 0; i < 2; i++)
 	{
+		int attribute_num = static_cast<int>(AttributeID::COLOR_0) + i;
+		AttributeID attr = static_cast<AttributeID>(attribute_num);
 		if (mesh->HasVertexColors(i))
 		{
-			vtx_colors[i] = static_cast<VVertexAttributeColor4 *>(vtx_data->GetAttribute(AttributeID::COLOR_0 + i))->GetData();
+			vtx_colors[i] = static_cast<VVertexAttributeColor4 *>(vtx_data->GetAttribute(attr))->GetData();
 		}
 	}
 	
 	for (int i = 0; i < 8; i++)
 	{
+		int attribute_num = static_cast<int>(AttributeID::TEX_0) + i;
+		AttributeID attr = static_cast<AttributeID>(attribute_num);
 		if (mesh->HasTextureCoords(i))
 		{
-			vtx_uvs[i] = static_cast<VVertexAttributeVector2 *>(vtx_data->GetAttribute(AttributeID::TEX_0 + i))->GetData();
+			vtx_uvs[i] = static_cast<VVertexAttributeVector3 *>(vtx_data->GetAttribute(attr))->GetData();
 		}
 	}
 
 	for (int i = 0; i < mesh->mNumFaces; i++)
 	{
-		uint16_t pos_index = mesh->mFaces[i].mIndices[0];
-		aiVector3D pos = mesh->mVertices[pos_index];
+		for (int j = 0; j < mesh->mFaces->mNumIndices; j++)
+		{
+			size_t global_attr_index = 0;
+			uint16_t index = mesh->mFaces[i].mIndices[j];
 
-		for (int i = 0; i < vtx_positions.size(); i++)
-		{
-			if (vtx_positions[i] == pos)
+			if (vtx_positions.contains(mesh->mVertices[index], &global_attr_index))
 			{
-				indices.append(i);
-				positions_for_bounds.append(pos);
-				break;
+				indices.append(global_attr_index);
+				positions_for_bounds.append(mesh->mVertices[index]);
 			}
-		}
-		
-		if (mesh->HasNormals())
-		{
-			uint16_t nrm_index = mesh->mFaces[i].mIndices[1];
+			else
+			{
+				// throw an exception
+			}
+
+			if (mesh->HasNormals())
+			{
+				if (vtx_normals.contains(mesh->mNormals[index], &global_attr_index))
+				{
+					indices.append(global_attr_index);
+				}
+				else
+				{
+					// throw an exception
+				}
+			}
+
+			for (int colors = 0; colors < 2; colors++)
+			{
+				if (mesh->HasVertexColors(colors))
+				{
+					if (vtx_colors[colors].contains(mesh->mColors[colors][index], &global_attr_index))
+					{
+						indices.append(global_attr_index);
+					}
+					else
+					{
+						// throw an exception
+					}
+				}
+			}
+
+			for (int uvs = 0; uvs < 8; uvs++)
+			{
+				if (mesh->HasTextureCoords(uvs))
+				{
+					if (vtx_uvs[uvs].contains(mesh->mTextureCoords[uvs][index], &global_attr_index))
+					{
+						indices.append(global_attr_index);
+					}
+					else
+					{
+						// throw an exception
+					}
+				}
+			}
 		}
 	}
 
@@ -135,6 +180,7 @@ void VMesh::FindBounds(CArrayT<aiVector3D> positions)
 void VMesh::Write(bStream::CFileStream * writer)
 {
 	writer->writeUInt32(attributes);
+	writer->writeInt32(0);
 
 	writer->writeFloat(min_bounds.x);
 	writer->writeFloat(min_bounds.y);
@@ -147,7 +193,13 @@ void VMesh::Write(bStream::CFileStream * writer)
 
 void VMesh::WritePrimitives(bStream::CFileStream * writer)
 {
+	writer->writeInt8(0x90);
+	writer->writeUInt16(num_faces);
 
+	for (int i = 0; i < indices.size(); i++)
+	{
+		writer->writeUInt16(indices[i]);
+	}
 }
 
 void VMesh::WriteName(bStream::CFileStream * writer)
