@@ -86,7 +86,7 @@ void VVertexData::ProcessMesh(aiMesh* mesh) {
 	}
 }
 
-void VVertexData::Write(bStream::CFileStream * writer, nlohmann::json attribute_settings = default_vertex_settings) {
+void VVertexData::Write(bStream::CFileStream * writer, nlohmann::json attribute_settings) {
 	long curOffset = writer->tell();
 
 	int num_active_attributes = 0;
@@ -130,6 +130,10 @@ void VVertexData::Write(bStream::CFileStream * writer, nlohmann::json attribute_
 			WriteUVs(writer, i, curOffset, attribute_settings["Settings"][4 + i]);
 		}
 	}
+
+	writer->seek(curOffset + 4);
+	writer->writeUInt32(writer->getSize() - curOffset);
+	writer->seek(writer->getSize());
 }
 
 CArrayT<aiVector3D> * VVertexData::GetPositions() {
@@ -187,86 +191,309 @@ void VVertexData::WriteAttributeHeader(bStream::CFileStream * writer, AttributeI
 }
 
 void VVertexData::WritePositions(bStream::CFileStream * writer, long vertex_data_start, nlohmann::json settings) {
-	ComponentCount cmp_cnt = StringToComponentCount(settings["ComponentCount"]);
-	ComponentType cmp_type = StringToComponentType(settings["ComponentType"]);
+	ComponentCount cmp_cnt = EnumUtil::StringToComponentCount(settings["ComponentCount"]);
+	ComponentType cmp_type = EnumUtil::StringToComponentType(settings["ComponentType"]);
+	int fixed_point = settings["FixedPointExponent"];
 
-	WriteAttributeHeader(writer, AttributeID::POSITION, cmp_cnt, cmp_type, settings["FixedPointExponent"],
-		mPositions.size(), vertex_data_start);
+	float scale_factor = static_cast<float>(1 << fixed_point);
 
-	long next_header_offset = writer->tell();
+
+	WriteAttributeHeader(writer, AttributeID::POSITION, cmp_cnt, cmp_type, fixed_point, mPositions.size(), vertex_data_start);
+	long next_header_offset = writer->tell() - vertex_data_start;
 	writer->seek(writer->getSize());
 
 	for (int i = 0; i < mPositions.size(); i++) {
-		writer->writeFloat(mPositions[i].x);
-		writer->writeFloat(mPositions[i].y);
-		writer->writeFloat(mPositions[i].z);
+		switch (cmp_type) {
+		case ComponentType::UNSIGNED_8: {
+			uint8_t x_u8 = mPositions[i].x * scale_factor;
+			uint8_t y_u8 = mPositions[i].y * scale_factor;
+			uint8_t z_u8 = mPositions[i].z * scale_factor;
+
+			writer->writeUInt8(x_u8);
+			writer->writeUInt8(y_u8);
+
+			if (cmp_cnt == ComponentCount::POS_XYZ) {
+				writer->writeUInt8(z_u8);
+			}
+		}
+			break;
+		case ComponentType::SIGNED_8: {
+			int8_t x_s8 = mPositions[i].x * scale_factor;
+			int8_t y_s8 = mPositions[i].y * scale_factor;
+			int8_t z_s8 = mPositions[i].z * scale_factor;
+
+			writer->writeInt8(x_s8);
+			writer->writeInt8(y_s8);
+
+			if (cmp_cnt == ComponentCount::POS_XYZ) {
+				writer->writeInt8(z_s8);
+			}
+		}
+			break;
+		case ComponentType::UNSIGNED_16: {
+			uint16_t x_u16 = mPositions[i].x * scale_factor;
+			uint16_t y_u16 = mPositions[i].y * scale_factor;
+			uint16_t z_u16 = mPositions[i].z * scale_factor;
+
+			writer->writeUInt16(x_u16);
+			writer->writeUInt16(y_u16);
+
+			if (cmp_cnt == ComponentCount::POS_XYZ) {
+				writer->writeUInt16(z_u16);
+			}
+		}
+			break;
+		case ComponentType::SIGNED_16: {
+			int16_t x_s16 = mPositions[i].x * scale_factor;
+			int16_t y_s16 = mPositions[i].y * scale_factor;
+			int16_t z_s16 = mPositions[i].z * scale_factor;
+
+			writer->writeInt16(x_s16);
+			writer->writeInt16(y_s16);
+
+			if (cmp_cnt == ComponentCount::POS_XYZ) {
+				writer->writeInt16(z_s16);
+			}
+		}
+			break;
+		case ComponentType::FLOAT_32: {
+			writer->writeFloat(mPositions[i].x);
+			writer->writeFloat(mPositions[i].y);
+
+			if (cmp_cnt == ComponentCount::POS_XYZ) {
+				writer->writeFloat(mPositions[i].z);
+			}
+		}
+			break;
+		}
 	}
 
+	StreamUtil::PadFileStream(writer, 32);
 	writer->seek(next_header_offset);
 }
 
 void VVertexData::WriteNormals(bStream::CFileStream * writer, long vertex_data_start, nlohmann::json settings) {
-	writer->writeInt32(static_cast<int>(AttributeID::NORMAL));
-	writer->writeInt8(4);
-	writer->writeInt8(0);
-	writer->writeInt8(0);
-	writer->writeInt8(-1);
-	writer->writeInt32(mNormals.size());
-	writer->writeInt32(writer->getSize() - vertex_data_start);
+	ComponentCount cmp_cnt = EnumUtil::StringToComponentCount(settings["ComponentCount"]);
+	ComponentType cmp_type = EnumUtil::StringToComponentType(settings["ComponentType"]);
+	int fixed_point = settings["FixedPointExponent"];
+
+	float scale_factor = static_cast<float>(1 << fixed_point);
+
+	WriteAttributeHeader(writer, AttributeID::NORMAL, cmp_cnt, cmp_type, fixed_point, mNormals.size(), vertex_data_start);
 
 	long next_header_offset = writer->tell();
-
 	writer->seek(writer->getSize());
 
 	for (int i = 0; i < mNormals.size(); i++) {
-		writer->writeFloat(mNormals[i].x);
-		writer->writeFloat(mNormals[i].y);
-		writer->writeFloat(mNormals[i].z);
+		switch (cmp_type) {
+		case ComponentType::UNSIGNED_8: {
+			uint8_t x_u8 = mNormals[i].x * scale_factor;
+			uint8_t y_u8 = mNormals[i].y * scale_factor;
+			uint8_t z_u8 = mNormals[i].z * scale_factor;
+
+			writer->writeUInt8(x_u8);
+			writer->writeUInt8(y_u8);
+
+			if (cmp_cnt == ComponentCount::NRM_XYZ) {
+				writer->writeUInt8(z_u8);
+			}
+		}
+			break;
+		case ComponentType::SIGNED_8: {
+			int8_t x_s8 = mNormals[i].x * scale_factor;
+			int8_t y_s8 = mNormals[i].y * scale_factor;
+			int8_t z_s8 = mNormals[i].z * scale_factor;
+
+			writer->writeInt8(x_s8);
+			writer->writeInt8(y_s8);
+
+			if (cmp_cnt == ComponentCount::NRM_XYZ) {
+				writer->writeInt8(z_s8);
+			}
+		}
+			break;
+		case ComponentType::UNSIGNED_16: {
+			uint16_t x_u16 = mNormals[i].x * scale_factor;
+			uint16_t y_u16 = mNormals[i].y * scale_factor;
+			uint16_t z_u16 = mNormals[i].z * scale_factor;
+
+			writer->writeUInt16(x_u16);
+			writer->writeUInt16(y_u16);
+
+			if (cmp_cnt == ComponentCount::NRM_XYZ) {
+				writer->writeUInt16(z_u16);
+			}
+		}
+			break;
+		case ComponentType::SIGNED_16: {
+			int16_t x_s16 = mNormals[i].x * scale_factor;
+			int16_t y_s16 = mNormals[i].y * scale_factor;
+			int16_t z_s16 = mNormals[i].z * scale_factor;
+
+			writer->writeInt16(x_s16);
+			writer->writeInt16(y_s16);
+
+			if (cmp_cnt == ComponentCount::NRM_XYZ) {
+				writer->writeInt16(z_s16);
+			}
+		}
+			break;
+		case ComponentType::FLOAT_32: {
+			writer->writeFloat(mNormals[i].x);
+			writer->writeFloat(mNormals[i].y);
+
+			if (cmp_cnt == ComponentCount::NRM_XYZ) {
+				writer->writeFloat(mNormals[i].z);
+			}
+		}
+			break;
+		}
 	}
 
+	StreamUtil::PadFileStream(writer, 32);
 	writer->seek(next_header_offset);
 }
 
 void VVertexData::WriteColors(bStream::CFileStream * writer, int index, long vertex_data_start, nlohmann::json settings) {
-	writer->writeInt32(static_cast<int>(AttributeID::COLOR_0) + index);
-	writer->writeInt8(5);
-	writer->writeInt8(0);
-	writer->writeInt8(0);
-	writer->writeInt8(-1);
-	writer->writeInt32(mColors[index].size());
-	writer->writeInt32(writer->getSize() - vertex_data_start);
+	ComponentCount cmp_cnt = EnumUtil::StringToComponentCount(settings["ComponentCount"]);
+	ComponentType cmp_type = EnumUtil::StringToComponentType(settings["ComponentType"]);
+
+	WriteAttributeHeader(writer, static_cast<AttributeID>(11 + index), cmp_cnt, cmp_type, 0, mColors[index].size(), vertex_data_start);
 
 	long next_header_offset = writer->tell();
-
 	writer->seek(writer->getSize());
 
 	for (int i = 0; i < mColors[index].size(); i++) {
-		writer->writeUInt8(mColors[index][i].r * 255.0f);
-		writer->writeUInt8(mColors[index][i].g * 255.0f);
-		writer->writeUInt8(mColors[index][i].b * 255.0f);
-		writer->writeUInt8(mColors[index][i].a * 255.0f);
+		switch (cmp_type) {
+		case ComponentType::RGB_565: {
+			uint8_t r_5 = mColors[index][i].r * 31.0f;
+			uint8_t g_6 = mColors[index][i].g * 63.0f;
+			uint8_t b_5 = mColors[index][i].b * 31.0f;
+
+			uint16_t rgb_565 = (r_5 << 11) || (g_6 << 5) || (b_5);
+		}
+			break;
+		case ComponentType::RGB_8: {
+			writer->writeUInt8(mColors[index][i].r * 255.0f);
+			writer->writeUInt8(mColors[index][i].g * 255.0f);
+			writer->writeUInt8(mColors[index][i].b * 255.0f);
+		}
+			break;
+		case ComponentType::RGBX_8: {
+			writer->writeUInt8(mColors[index][i].r * 255.0f);
+			writer->writeUInt8(mColors[index][i].g * 255.0f);
+			writer->writeUInt8(mColors[index][i].b * 255.0f);
+			writer->writeUInt8(0);
+		}
+			break;
+		case ComponentType::RGBA_4: {
+			uint8_t r_4 = mColors[index][i].r * 15.0f;
+			uint8_t g_4 = mColors[index][i].g * 15.0f;
+			uint8_t b_4 = mColors[index][i].b * 15.0f;
+			uint8_t a_4 = mColors[index][i].a * 15.0f;
+
+			uint8_t rg_4 = (r_4 << 4) || (g_4);
+			uint8_t ba_4 = (b_4 << 4) || (a_4);
+
+			writer->writeUInt8(rg_4);
+			writer->writeUInt8(ba_4);
+		}
+			break;
+		case ComponentType::RGBA_6: {
+			uint8_t r_6 = mColors[index][i].r * 63.0f;
+			uint8_t g_6 = mColors[index][i].g * 63.0f;
+			uint8_t b_6 = mColors[index][i].b * 63.0f;
+			uint8_t a_6 = mColors[index][i].a * 63.0f;
+
+			uint32_t rgba_6 = (r_6 << 26) || (b_6 << 20) || (g_6 << 14) || (a_6 << 8);
+
+			writer->writeUInt32(rgba_6);
+		}
+			break;
+		case ComponentType::RGBA_8: {
+			writer->writeUInt8(mColors[index][i].r * 255.0f);
+			writer->writeUInt8(mColors[index][i].g * 255.0f);
+			writer->writeUInt8(mColors[index][i].b * 255.0f);
+			writer->writeUInt8(mColors[index][i].a * 255.0f);
+		}
+			break;
+		}
 	}
 
+	StreamUtil::PadFileStream(writer, 32);
 	writer->seek(next_header_offset);
 }
 
 void VVertexData::WriteUVs(bStream::CFileStream * writer, int index, long vertex_data_start, nlohmann::json settings) {
-	writer->writeInt32(static_cast<int>(AttributeID::TEX_0) + index);
-	writer->writeInt8(4);
-	writer->writeInt8(0);
-	writer->writeInt8(0);
-	writer->writeInt8(-1);
-	writer->writeInt32(mUVs[index].size());
-	writer->writeInt32(writer->getSize() - vertex_data_start);
+	ComponentCount cmp_cnt = EnumUtil::StringToComponentCount(settings["ComponentCount"]);
+	ComponentType cmp_type = EnumUtil::StringToComponentType(settings["ComponentType"]);
+	int fixed_point = settings["FixedPointExponent"];
+
+	float scale_factor = static_cast<float>(1 << fixed_point);
+
+	WriteAttributeHeader(writer, static_cast<AttributeID>(13 + index), cmp_cnt, cmp_type, fixed_point,
+		mUVs[index].size(), vertex_data_start);
 
 	long next_header_offset = writer->tell();
-
 	writer->seek(writer->getSize());
 
-	for (int i = 0; i < mUVs[index].size(); i++) {
-		writer->writeFloat(mUVs[index][i].x);
-		writer->writeFloat(mUVs[index][i].y);
+	for (int i = 0; i < mColors[index].size(); i++) {
+		switch (cmp_type) {
+		case ComponentType::UNSIGNED_8: {
+			uint8_t x_u8 = mNormals[i].x * scale_factor;
+			uint8_t y_u8 = mNormals[i].y * scale_factor;
+
+			writer->writeUInt8(x_u8);
+
+			if (cmp_cnt == ComponentCount::TEX_ST) {
+				writer->writeUInt8(y_u8);
+			}
+		}
+			break;
+		case ComponentType::SIGNED_8: {
+			int8_t x_s8 = mNormals[i].x * scale_factor;
+			int8_t y_s8 = mNormals[i].y * scale_factor;
+
+			writer->writeInt8(x_s8);
+
+			if (cmp_cnt == ComponentCount::TEX_ST) {
+				writer->writeInt8(y_s8);
+			}
+		}
+			break;
+		case ComponentType::UNSIGNED_16: {
+			uint16_t x_u16 = mNormals[i].x * scale_factor;
+			uint16_t y_u16 = mNormals[i].y * scale_factor;
+
+			writer->writeUInt16(x_u16);
+
+			if (cmp_cnt == ComponentCount::TEX_ST) {
+				writer->writeUInt16(y_u16);
+			}
+		}
+			break;
+		case ComponentType::SIGNED_16: {
+			int16_t x_s16 = mNormals[i].x * scale_factor;
+			int16_t y_s16 = mNormals[i].y * scale_factor;
+
+			writer->writeInt16(x_s16);
+
+			if (cmp_cnt == ComponentCount::TEX_ST) {
+				writer->writeInt16(y_s16);
+			}
+		}
+			break;
+		case ComponentType::FLOAT_32: {
+			writer->writeFloat(mNormals[i].x);
+
+			if (cmp_cnt == ComponentCount::TEX_ST) {
+				writer->writeFloat(mNormals[i].y);
+			}
+		}
+			break;
+		}
 	}
 
+	StreamUtil::PadFileStream(writer, 32);
 	writer->seek(next_header_offset);
 }

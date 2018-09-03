@@ -2,6 +2,7 @@
 #include <cassert>
 #include <assimp/scene.h>
 #include "../GX_Enums.h"
+#include "../../util/enumutil.h"
 #include "../../util/json.hpp"
 #include "util/array.h"
 #include "util/bstream.h"
@@ -13,7 +14,7 @@ static const nlohmann::json default_vertex_settings = {
 			{
 				{ "Attribute", "POSITION" },
                 { "ComponentCount", "POS_XYZ" },
-				{ "ComponentType", "FLOAT32" },
+				{ "ComponentType", "FLOAT_32" },
 				{ "FixedPointExponent", 0 }
 			},
 			{

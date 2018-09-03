@@ -196,6 +196,7 @@
     <ClCompile Include="source\model\vmodel.cpp" />
     <ClCompile Include="source\model\vertex_data\vvertexdata.cpp" />
     <ClCompile Include="source\util\bstream.cpp" />
+    <ClCompile Include="source\util\enumutil.cpp" />
     <ClCompile Include="VDMConvert.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -206,6 +207,7 @@
     <ClInclude Include="include\model\vertex_data\vvertexdata.h" />
     <ClInclude Include="include\util\array.h" />
     <ClInclude Include="include\util\bstream.h" />
+    <ClInclude Include="include\util\enumutil.h" />
     <ClInclude Include="include\util\json.hpp" />
     <ClInclude Include="include\util\streamutil.h" />
   </ItemGroup>

@@ -1,7 +1,6 @@
 #pragma once
 #include <assimp/mesh.h>
 #include "util/bstream.h"
-#include "model/GX_Enums.h"
 #include "model/vertex_data/vvertexdata.h"
 
 class VMesh {
