@@ -193,9 +193,8 @@
   <ItemGroup>
     <ClCompile Include="source\geometry\vgeometry.cpp" />
     <ClCompile Include="source\geometry\vmesh.cpp" />
-    <ClCompile Include="source\model\vdmodel.cpp" />
-    <ClCompile Include="source\model\vertex_data\vdvertexattribute.cpp" />
-    <ClCompile Include="source\model\vertex_data\vdvertexdata.cpp" />
+    <ClCompile Include="source\model\vmodel.cpp" />
+    <ClCompile Include="source\model\vertex_data\vvertexdata.cpp" />
     <ClCompile Include="source\util\bstream.cpp" />
     <ClCompile Include="VDMConvert.cpp" />
   </ItemGroup>
@@ -204,12 +203,10 @@
     <ClInclude Include="include\model\geometry\vmesh.h" />
     <ClInclude Include="include\model\GX_Enums.h" />
     <ClInclude Include="include\model\vmodel.h" />
-    <ClInclude Include="include\model\vertex_data\vvertexattributebase.h" />
-    <ClInclude Include="include\model\vertex_data\vvertexattributes.h" />
-    <ClInclude Include="include\model\vertex_data\vvertexattributet.h" />
     <ClInclude Include="include\model\vertex_data\vvertexdata.h" />
     <ClInclude Include="include\util\array.h" />
     <ClInclude Include="include\util\bstream.h" />
+    <ClInclude Include="include\util\json.hpp" />
     <ClInclude Include="include\util\streamutil.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

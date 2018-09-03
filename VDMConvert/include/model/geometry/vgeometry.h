@@ -5,7 +5,6 @@
 #include "util/array.h"
 #include "vmesh.h"
 #include "model/vertex_data/vvertexdata.h"
-#include "model/vertex_data/vvertexattributes.h"
 
 class VGeometry {
 private:

@@ -6,7 +6,6 @@ VMesh::VMesh(aiMesh* mesh, VVertexData * vtx_data)
 	num_faces = mesh->mNumFaces;
 
 	SetAttributes(mesh);
-	SetIndices(mesh, vtx_data);
 }
 
 void VMesh::SetAttributes(aiMesh * mesh)
@@ -34,104 +33,6 @@ void VMesh::SetAttributes(aiMesh * mesh)
 			attributes |= (1 << static_cast<int32_t>(AttributeID::TEX_0 + i));
 		}
 	}
-}
-
-void VMesh::SetIndices(aiMesh * mesh, VVertexData * vtx_data)
-{
-	CArrayT<aiVector3D> positions_for_bounds;
-
-	CArrayT<aiVector3D> vtx_positions = static_cast<VVertexAttributeVector3 *>(vtx_data->GetAttribute(AttributeID::POSITION))->GetData();
-	CArrayT<aiVector3D> vtx_normals;
-	CArrayT<aiColor4D>  vtx_colors[2];
-	CArrayT<aiVector3D> vtx_uvs[8];
-	
-	if (mesh->HasNormals())
-	{
-		vtx_normals = static_cast<VVertexAttributeVector3 *>(vtx_data->GetAttribute(AttributeID::NORMAL))->GetData();
-	}
-	
-	for (int i = 0; i < 2; i++)
-	{
-		int attribute_num = static_cast<int>(AttributeID::COLOR_0) + i;
-		AttributeID attr = static_cast<AttributeID>(attribute_num);
-		if (mesh->HasVertexColors(i))
-		{
-			vtx_colors[i] = static_cast<VVertexAttributeColor4 *>(vtx_data->GetAttribute(attr))->GetData();
-		}
-	}
-	
-	for (int i = 0; i < 8; i++)
-	{
-		int attribute_num = static_cast<int>(AttributeID::TEX_0) + i;
-		AttributeID attr = static_cast<AttributeID>(attribute_num);
-		if (mesh->HasTextureCoords(i))
-		{
-			vtx_uvs[i] = static_cast<VVertexAttributeVector3 *>(vtx_data->GetAttribute(attr))->GetData();
-		}
-	}
-
-	for (int i = 0; i < mesh->mNumFaces; i++)
-	{
-		for (int j = 0; j < mesh->mFaces->mNumIndices; j++)
-		{
-			size_t global_attr_index = 0;
-			uint16_t index = mesh->mFaces[i].mIndices[j];
-
-			if (vtx_positions.contains(mesh->mVertices[index], &global_attr_index))
-			{
-				indices.append(global_attr_index);
-				positions_for_bounds.append(mesh->mVertices[index]);
-			}
-			else
-			{
-				// throw an exception
-			}
-
-			if (mesh->HasNormals())
-			{
-				if (vtx_normals.contains(mesh->mNormals[index], &global_attr_index))
-				{
-					indices.append(global_attr_index);
-				}
-				else
-				{
-					// throw an exception
-				}
-			}
-
-			for (int colors = 0; colors < 2; colors++)
-			{
-				if (mesh->HasVertexColors(colors))
-				{
-					if (vtx_colors[colors].contains(mesh->mColors[colors][index], &global_attr_index))
-					{
-						indices.append(global_attr_index);
-					}
-					else
-					{
-						// throw an exception
-					}
-				}
-			}
-
-			for (int uvs = 0; uvs < 8; uvs++)
-			{
-				if (mesh->HasTextureCoords(uvs))
-				{
-					if (vtx_uvs[uvs].contains(mesh->mTextureCoords[uvs][index], &global_attr_index))
-					{
-						indices.append(global_attr_index);
-					}
-					else
-					{
-						// throw an exception
-					}
-				}
-			}
-		}
-	}
-
-	FindBounds(positions_for_bounds);
 }
 
 void VMesh::FindBounds(CArrayT<aiVector3D> positions)

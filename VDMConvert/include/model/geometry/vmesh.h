@@ -14,7 +14,6 @@ private:
 	aiVector3D max_bounds;
 
 	void SetAttributes(aiMesh * mesh);
-	void SetIndices(aiMesh * mesh, VVertexData * vtx_data);
 	void FindBounds(CArrayT<aiVector3D> positions);
 public:
 	VMesh(aiMesh* mesh, VVertexData * vtx_data);

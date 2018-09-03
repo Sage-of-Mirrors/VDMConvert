@@ -21,19 +21,16 @@
     <ClCompile Include="source\util\bstream.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\model\vdmodel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\model\vertex_data\vdvertexattribute.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\model\vertex_data\vdvertexdata.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="source\geometry\vgeometry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\geometry\vmesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\model\vmodel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\model\vertex_data\vvertexdata.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -53,15 +50,6 @@
     <ClInclude Include="include\model\vertex_data\vvertexdata.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\model\vertex_data\vvertexattributet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\model\vertex_data\vvertexattributes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\model\vertex_data\vvertexattributebase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\model\vmodel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -69,6 +57,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\model\geometry\vmesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\util\json.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
