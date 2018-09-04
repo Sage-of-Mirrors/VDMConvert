@@ -36,6 +36,9 @@
     <ClCompile Include="source\util\enumutil.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="source\model\scenegraph\bone.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\util\array.h">
@@ -66,6 +69,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\util\enumutil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\model\scenegraph\bone.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

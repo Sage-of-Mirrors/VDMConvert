@@ -1,5 +1,6 @@
 #pragma once
 #include <assimp/mesh.h>
+#include <vector>
 #include "util/bstream.h"
 #include "model/vertex_data/vvertexdata.h"
 
@@ -13,11 +14,11 @@ private:
 	aiVector3D max_bounds;
 
 	void SetAttributes(aiMesh * mesh);
-	void FindBounds(CArrayT<aiVector3D> positions);
+	void FindBounds(aiVector3D * positions, int count);
 public:
 	VMesh(aiMesh* mesh, VVertexData * vtx_data);
 	
 	void Write(bStream::CFileStream * writer);
-	void WritePrimitives(bStream::CFileStream * writer);
+	int WritePrimitives(bStream::CFileStream * writer);
 	void WriteName(bStream::CFileStream * writer);
 };

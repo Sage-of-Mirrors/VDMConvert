@@ -193,6 +193,7 @@
   <ItemGroup>
     <ClCompile Include="source\geometry\vgeometry.cpp" />
     <ClCompile Include="source\geometry\vmesh.cpp" />
+    <ClCompile Include="source\model\scenegraph\bone.cpp" />
     <ClCompile Include="source\model\vmodel.cpp" />
     <ClCompile Include="source\model\vertex_data\vvertexdata.cpp" />
     <ClCompile Include="source\util\bstream.cpp" />
@@ -203,6 +204,7 @@
     <ClInclude Include="include\model\geometry\vgeometry.h" />
     <ClInclude Include="include\model\geometry\vmesh.h" />
     <ClInclude Include="include\model\GX_Enums.h" />
+    <ClInclude Include="include\model\scenegraph\bone.h" />
     <ClInclude Include="include\model\vmodel.h" />
     <ClInclude Include="include\model\vertex_data\vvertexdata.h" />
     <ClInclude Include="include\util\array.h" />
