@@ -20,6 +20,7 @@ VModel::VModel(const std::string file_path)
 
 	vertData = new VVertexData(scene->mMeshes, scene->mNumMeshes);
 	geomData = new VGeometry(scene->mMeshes, scene->mNumMeshes, vertData);
+	sceneData = new VScenegraph(scene->mRootNode);
 
 	aiReleaseImport(scene);
 }
@@ -28,6 +29,7 @@ VModel::~VModel()
 {
 	delete vertData;
 	delete geomData;
+	delete sceneData;
 }
 
 void VModel::WriteVDM(const std::string file_path)
@@ -41,6 +43,7 @@ void VModel::WriteVDM(const std::string file_path)
 
 	vertData->Write(writer);
 	geomData->Write(writer);
+	sceneData->Write(writer);
 
 	writer->seek(4);
 	writer->writeInt32(writer->getSize()); // Write file size

@@ -21,12 +21,6 @@
     <ClCompile Include="source\util\bstream.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\geometry\vgeometry.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\geometry\vmesh.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="source\model\vmodel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -36,7 +30,16 @@
     <ClCompile Include="source\util\enumutil.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\model\scenegraph\bone.cpp">
+    <ClCompile Include="source\model\scenegraph\scenenode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\model\geometry\vgeometry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\model\geometry\vmesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\model\scenegraph\vscenegraph.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -71,7 +74,13 @@
     <ClInclude Include="include\util\enumutil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\model\scenegraph\bone.h">
+    <ClInclude Include="include\model\scenegraph\scenenode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\model\scenegraph\scenenodeindexholder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\model\scenegraph\vscenegraph.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
